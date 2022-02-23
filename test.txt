@@ -1,0 +1,2 @@
+insert 0 DNA AAAA
+print

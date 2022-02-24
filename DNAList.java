@@ -3,86 +3,117 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class DNAList {
-    // protected LList<LList<Character>> sequenceArray;
-    LList<Character>[] sequenceArray; // scuffed method?
+public class DNAList extends Sequence{
 
+    Sequence[] sequenceArray; // scuffed method?
+
+    //creates array of type EMPTY with inputted size
     DNAList(int size) {
-        // sequenceArray = new LList<LList<Character>>();
-
-        sequenceArray = (LList<Character>[]) new LList[size]; // scuffed method?
-    }
-
-    private boolean charContains(char[] arr, char target) {
-        for(char i : arr) {
-            if(i == target) {
-                return true;
-            }
+        sequenceArray = new Sequence[size];
+        for(int i = 0; i < size; i ++) {
+            Sequence fill = new Sequence(Type.EMPTY);
+            sequenceArray[i] = fill;
         }
-        return false;
     }
 
-    private boolean validateSequence(char[] sequence, String type) {
-        char[] DNA = new char[]{'A','C','G','T'};
-        char[] RNA = new char[]{'A','C','G','U'};
-
-        for(char c : (type.equals("DNA") ? DNA : RNA)) {
-            if(!charContains(sequence, c)) {
-                return false;
-            }
+    void insert(int pos, String type, String sequence) {
+        boolean isValid = true;
+        switch (type) {
+            case "DNA":
+                for (int i = 0; i < sequence.length(); i++) {
+                    if (sequence.charAt(i) != 'A' && sequence.charAt(i) != 'C'
+                            && sequence.charAt(i) != 'G' && sequence.charAt(i) != 'T') {
+                        System.out.println("Error occurred while inserting");
+                        isValid = false;
+                        break;
+                    }
+                }
+                if (isValid) {
+                    LList<Character> seqList = new LList<>();
+                    for (int i = 0; i < sequence.length(); i ++) {
+                        seqList.append(sequence.charAt(i));
+                    }
+                    Sequence seq = new Sequence(Type.DNA, seqList);
+                    sequenceArray[pos] = seq;
+                }
+                break;
+            case "RNA":
+                for (int i = 0; i < sequence.length(); i++) {
+                    if (sequence.charAt(i) != 'A' && sequence.charAt(i) != 'C'
+                            && sequence.charAt(i) != 'G' && sequence.charAt(i) != 'U') {
+                        System.out.println("Error occurred while inserting");
+                        isValid = false;
+                        break;
+                    }
+                }
+                if (isValid) {
+                    LList<Character> seqList = new LList<>();
+                    for (int i = 0; i < sequence.length(); i ++) {
+                        seqList.append(sequence.charAt(i));
+                    }
+                    Sequence seq = new Sequence(Type.RNA, seqList);
+                    sequenceArray[pos] = seq;
+                }
+                break;
         }
-        return true;
     }
 
-    private LList<Character> createLListFromSequence(char[] sequence, String type) {
-        if(!validateSequence(sequence, type)) {
-            return null;
+    //removes sequence at specified point
+    void remove(int pos) {
+        if (sequenceArray[pos].getType() == Type.EMPTY) {
+            System.out.println("No sequence to remove at specified position.");
         }
-
-        LList<Character> out = new LList<Character>();
-        for(char c : sequence) {
-            out.append(c);
+        else {
+            sequenceArray[pos].clear();
+            sequenceArray[pos].setType(Type.EMPTY);
         }
-        return out;
     }
 
-    void insert(int pos, String type, char[] sequence) {
-        LList<Character> tmp = new LList<Character>();
-
-        for(char c : sequence) {
-            System.out.print(c + " ");
-            tmp.append(c);
-        }
-
-        sequenceArray[pos] = tmp;  //TODO: does this mess up the references between assignments?
-    }
-
-    LList<Character> remove(int pos) {
-        return null;
-    }
-
+    //prints all sequences
     void print() {
-        for(LList<Character> item : this.sequenceArray) {
-            for(int i = 0; i < item.length(); i++) {
-                item.moveToPos(i);
-                System.out.println(item.getValue());
-            }
+        for(int i = 0; i < sequenceArray.length; i++) {
+            if (sequenceArray[i].getType() != Type.EMPTY)
+                System.out.println(i + "\t" + sequenceArray[i].getType() + "\t" + sequenceArray[i].getSeq());
         }
     }
 
+    //prints sequence at specified point
     void print(int pos) {
-        System.out.println(sequenceArray[pos].getValue());
+        if (sequenceArray[pos].getType() == Type.EMPTY) {
+            System.out.println("No sequence to print at specified position");
+        } else {System.out.println(sequenceArray[pos].getType() + "\t" + sequenceArray[pos].getSeq());}
     }
 
     void clip(int pos, int start, int end) {
+        //testing for valid input
+        if (sequenceArray[pos].getType() == Type.EMPTY) {
+            System.out.println("No sequence to print at specified position");
+        } else if (start < 0) {System.out.println("Invalid start index");
+        } else if (start > sequenceArray[pos].getLength()) {System.out.println("Start index out of bounds.");
+        } else if (end > sequenceArray[pos].getLength()) {System.out.println("End index out of bounds.");
+        //clipping //TODO: figure out logic for diff cases (start=end, end<start)
+        } else {
+            LList<Character> clip = new LList<>();
+            for (int i = start; i <= end; i++) {// for edge case as has to be inclusive
+                sequenceArray[pos].getList().moveToPos(i);
+                clip.append(sequenceArray[pos].getList().getValue());
+            }
+            sequenceArray[pos].setSeq(clip);
+        }
+
 
     }
 
     void copy(int pos1, int pos2) {
+        if (sequenceArray[pos1].getType() == Type.EMPTY) {
+            System.out.println("No sequence to print at specified position");
+        } else {
+            sequenceArray[pos2].setSeq(sequenceArray[pos1]);
+        }
 
     }
 
-    void transcribe(int pos) {
+    void transcribe(int pos1) {
 
     }
 
@@ -116,21 +147,28 @@ public class DNAList {
                     case "insert":
                         if(cmd.length != 4) { throw new Error("invalid command"); }
                         
-                        dList.insert(Integer.parseInt(cmd[1]), cmd[2], cmd[3].toCharArray());
+                        dList.insert(Integer.parseInt(cmd[1]), cmd[2], cmd[3]);
                         
                         break;
 
                     case "remove":
                         if(cmd.length != 2) { throw new Error("invalid command"); }
 
+                        dList.remove(Integer.parseInt(cmd[1]));
+
                         break;
 
                     case "clip":
                         if(cmd.length != 4) { throw new Error("invalid command"); }
 
+                        dList.clip(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3]));
+
                         break;
 
                     case "copy":
+                        if(cmd.length != 3) { throw new Error("invalid command"); }
+
+                        dList.copy(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
 
                         break;
 

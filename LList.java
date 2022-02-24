@@ -89,24 +89,16 @@ public class LList<T> {
 
     public String toString() {
         int oldPosition = currPos();
-        
+
         StringBuffer output = new StringBuffer((length + 1) * 4); //TODO: more than 1 digit numbers?
 
         moveToStart();
 
-        output.append("< ");
-        for(int i = 0; i < oldPosition; i++) {
+        while(current.next() != null) {
             output.append(getValue());
-            output.append(" ");
             next();
         }
-        output.append("| ");
-        for(int i = oldPosition; i < length; i++) {
-            output.append(getValue());
-            output.append(" ");
-            next();
-        }
-        output.append(">");
+
         moveToPos(oldPosition);
         return output.toString();
     }

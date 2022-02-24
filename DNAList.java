@@ -102,7 +102,7 @@ public class DNAList extends Sequence{
         }
 
 
-    }
+    }//
 
     void copy(int pos1, int pos2) {
         if (sequenceArray[pos1].getType() == Type.EMPTY) {

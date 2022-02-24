@@ -14,7 +14,7 @@ public class DNAList extends Sequence{
             Sequence fill = new Sequence(Type.EMPTY);
             sequenceArray[i] = fill;
         }
-    }
+    }//
 
     void insert(int pos, String type, String sequence) {
         boolean isValid = true;

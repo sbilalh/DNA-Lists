@@ -1,5 +1,3 @@
-package src;
-
 public class LList<T> {
     private Node<T> head;
     private Node<T> tail;

@@ -1,6 +1,4 @@
-package src;
-
-public class Sequence extends LList<Character> {
+public class Sequence {
     Type type;
     LList<Character> seq;
 
@@ -27,7 +25,7 @@ public class Sequence extends LList<Character> {
         return type;
     }
 
-    public void setSeq(LList<Character> seq) {
+    public void setList(LList<Character> seq) {
         this.seq = seq;
     }
     public String getSeq() {

@@ -1,11 +1,9 @@
-package src;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class DNAList extends Sequence{
+public class DNAList extends Sequence {
 
     Sequence[] sequenceArray; // scuffed method?
 
@@ -66,7 +64,7 @@ public class DNAList extends Sequence{
             System.out.println("No sequence to remove at specified position.");
         }
         else {
-            sequenceArray[pos].clear();
+            sequenceArray[pos].getList().clear();
             sequenceArray[pos].setType(Type.EMPTY);
         }
     }
@@ -100,7 +98,7 @@ public class DNAList extends Sequence{
                 sequenceArray[pos].getList().moveToPos(i);
                 clip.append(sequenceArray[pos].getList().getValue());
             }
-            sequenceArray[pos].setSeq(clip);
+            sequenceArray[pos].setList(clip);
         }
 
 
@@ -110,7 +108,7 @@ public class DNAList extends Sequence{
         if (sequenceArray[pos1].getType() == Type.EMPTY) {
             System.out.println("No sequence to print at specified position");
         } else {
-            sequenceArray[pos2].setSeq(sequenceArray[pos1]);
+            sequenceArray[pos2].setList(sequenceArray[pos1].getList());
         }
 
     }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class DNAList extends Sequence {
 
-    Sequence[] sequenceArray; // scuffed method?
+    Sequence[] sequenceArray; 
 
     //creates array of type EMPTY with inputted size
     DNAList(int size) {
@@ -102,7 +102,7 @@ public class DNAList extends Sequence {
     void clip(int pos, int start, int end) {
 
         if (sequenceArray[pos].getType() == Type.EMPTY) {
-            System.out.println("No sequence to print at specified position");
+            System.out.println("No sequence to clip at specified position");
         } else if (start < 0) {System.out.println("Invalid start index");
         } else if (start > sequenceArray[pos].getLength()) {System.out.println("Start index out of bounds.");
         } else if (end > sequenceArray[pos].getLength()) {System.out.println("End index out of bounds.");
@@ -121,7 +121,7 @@ public class DNAList extends Sequence {
     void copy(int pos1, int pos2) {
 
         if (sequenceArray[pos1].getType() == Type.EMPTY) {
-            System.out.println("No sequence to print at specified position");
+            System.out.println("No sequence to copy at specified position");
         } else {
             sequenceArray[pos2].setList(sequenceArray[pos1].getList());
         }
@@ -136,19 +136,21 @@ public class DNAList extends Sequence {
         } else if (sequenceArray[pos1].getType() == Type.EMPTY) {
             System.out.println("No sequence to transcribe at specified position");
         } else {
+
+            sequenceArray[pos1].setType(Type.RNA);
+
             for (int i = 0; i < sequenceArray[pos1].getLength(); i++) {
 
                 sequenceArray[pos1].getList().moveToPos(i);
 
                 switch (sequenceArray[pos1].getSeq().charAt(i)) {
 
-                    case 'T':
                     case 'A': 
                         sequenceArray[pos1].getList().remove();
                         sequenceArray[pos1].getList().insert('U');
                         break;
 
-                    case 'U':
+                    case 'T':
                         sequenceArray[pos1].getList().remove();
                         sequenceArray[pos1].getList().insert('A');
                         break;
@@ -184,7 +186,7 @@ public class DNAList extends Sequence {
         }
 
         return out;
-        
+
     }
 
     public static void main(String[] args) {

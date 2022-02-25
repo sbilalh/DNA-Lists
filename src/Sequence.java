@@ -1,3 +1,5 @@
+package src;
+
 public class Sequence extends LList<Character> {
     Type type;
     LList<Character> seq;

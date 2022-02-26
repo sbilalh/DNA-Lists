@@ -1,3 +1,11 @@
+/**
+ * CSC 172 - Lab 4
+ * Bilal Hussain (shussa11@u.rochester.edu)
+ * Sammy Potter (spott14@u.rochester.edu)
+ * 26 February 2022
+ * See README.txt
+ */
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;

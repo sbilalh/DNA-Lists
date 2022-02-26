@@ -1,3 +1,11 @@
+/**
+ * CSC 172 - Lab 4
+ * Bilal Hussain (shussa11@u.rochester.edu)
+ * Sammy Potter (spott14@u.rochester.edu)
+ * 26 February 2022
+ * See README.txt
+ */
+
 public class LList<T> {
     private Node<T> head;
     private Node<T> tail;

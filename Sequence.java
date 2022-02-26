@@ -43,5 +43,4 @@ public class Sequence {
     public int getLength() {
         return seq.length();
     }
-
 }

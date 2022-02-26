@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class DNAList extends Sequence {
 
@@ -15,7 +16,6 @@ public class DNAList extends Sequence {
             Sequence fill = new Sequence(Type.EMPTY);
             sequenceArray[i] = fill;
         }
-
     }
 
     //inserts sequence to position pos in the sequence array with enum type
@@ -24,7 +24,6 @@ public class DNAList extends Sequence {
         boolean isValid = true;
 
         switch (type) {
-
             case "DNA":
                 for (int i = 0; i < sequence.length(); i++) {
                     if (sequence.charAt(i) != 'A' && sequence.charAt(i) != 'C'
@@ -63,20 +62,18 @@ public class DNAList extends Sequence {
                 }
                 break;
         }
-
     }
 
     //removes sequence at specified point
     void remove(int pos) {
 
         if (sequenceArray[pos].getType() == Type.EMPTY) {
-            System.out.println("No sequence to remove at specified position.");
+            System.out.println("No sequence to remove at specified position");
         }
         else {
             sequenceArray[pos].getList().clear();
             sequenceArray[pos].setType(Type.EMPTY);
         }
-
     }
 
     //prints all sequences
@@ -86,7 +83,6 @@ public class DNAList extends Sequence {
             if (sequenceArray[i].getType() != Type.EMPTY)
                 System.out.println(i + "\t" + sequenceArray[i].getType() + "\t" + sequenceArray[i].getSeq());
         }
-
     }
 
     //prints sequence at specified point
@@ -95,7 +91,6 @@ public class DNAList extends Sequence {
         if (sequenceArray[pos].getType() == Type.EMPTY) {
             System.out.println("No sequence to print at specified position");
         } else {System.out.println(sequenceArray[pos].getType() + "\t" + sequenceArray[pos].getSeq());}
-
     }
 
     //replaces the sequence at position pos with a clipped version of the sequence
@@ -104,8 +99,8 @@ public class DNAList extends Sequence {
         if (sequenceArray[pos].getType() == Type.EMPTY) {
             System.out.println("No sequence to clip at specified position");
         } else if (start < 0) {System.out.println("Invalid start index");
-        } else if (start > sequenceArray[pos].getLength()) {System.out.println("Start index out of bounds.");
-        } else if (end > sequenceArray[pos].getLength()) {System.out.println("End index out of bounds.");
+        } else if (start > sequenceArray[pos].getLength()) {System.out.println("Start index out of bounds");
+        } else if (end > sequenceArray[pos].getLength()) {System.out.println("End index is out of bounds");
         } else {
             LList<Character> clip = new LList<>();
             for (int i = start; i <= end; i++) {
@@ -114,7 +109,6 @@ public class DNAList extends Sequence {
             }
             sequenceArray[pos].setList(clip);
         }
-
     }
 
     //copies the sequence at pos1 and sets it to pos2
@@ -136,38 +130,23 @@ public class DNAList extends Sequence {
         } else if (sequenceArray[pos1].getType() == Type.EMPTY) {
             System.out.println("No sequence to transcribe at specified position");
         } else {
-
             sequenceArray[pos1].setType(Type.RNA);
+            
+            Map<Character, Character> trMap = Map.of(
+                'A','U',
+                'T','A',
+                'C','G',
+                'G','C'
+            );
 
             for (int i = 0; i < sequenceArray[pos1].getLength(); i++) {
-
                 sequenceArray[pos1].getList().moveToPos(i);
+                Character currentChar = sequenceArray[pos1].getSeq().charAt(i);
 
-                switch (sequenceArray[pos1].getSeq().charAt(i)) {
-
-                    case 'A': 
-                        sequenceArray[pos1].getList().remove();
-                        sequenceArray[pos1].getList().insert('U');
-                        break;
-
-                    case 'T':
-                        sequenceArray[pos1].getList().remove();
-                        sequenceArray[pos1].getList().insert('A');
-                        break;
-
-                    case 'C': 
-                        sequenceArray[pos1].getList().remove();
-                        sequenceArray[pos1].getList().insert('G');
-                        break;
-
-                    case 'G':
-                        sequenceArray[pos1].getList().remove();
-                        sequenceArray[pos1].getList().insert('C');
-                        break;
-                }
+                sequenceArray[pos1].getList().remove();
+                sequenceArray[pos1].getList().insert(trMap.get(currentChar));
             }
         }
-
     }
 
     private static ArrayList<String[]> readFile(String filePath) {
@@ -190,10 +169,8 @@ public class DNAList extends Sequence {
     }
 
     public static void main(String[] args) {
-        System.out.println("Got args: " + args[0] + ", " + args[1]);
 
         DNAList dList = new DNAList(Integer.parseInt(args[0]));
-
         ArrayList<String[]> commands = readFile(args[1]);
 
         for(String[] cmd : commands) {
@@ -252,6 +229,5 @@ public class DNAList extends Sequence {
                 System.out.println(e);
             }
         }
-
     }
 }

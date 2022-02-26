@@ -1,7 +1,7 @@
 CSC 172 - Lab 4
 26 February 2022
 
-Bilal Hussain
+Syed Bilal Hussain
 shussa11@u.rochester.edu
 
 Sammy Potter

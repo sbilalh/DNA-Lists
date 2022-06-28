@@ -1,11 +1,4 @@
-CSC 172 - Lab 4
-26 February 2022
-
-Syed Bilal Hussain
-shussa11@u.rochester.edu
-
-Sammy Potter
-spott14@u.rochester.edu
+This program manipulates sequences of DNA and RNA using different methods through linked lists and enumeration. Functionalities include inserting sequences at different posistions, removing sequences from certain positions, printing all, as well as specific sequences, cliping sequences, copying sequences, and transcribing sequences.
 
 Files:
 
